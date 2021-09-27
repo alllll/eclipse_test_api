@@ -49,3 +49,8 @@ app.*.map.json
 /ios/build
 key.properties
 *.jks
+build/ios/iphonesimulator/Runner.app/Runner
+build/ios/iphonesimulator/Runner.app/_CodeSignature/CodeResources
+build/ios/Debug-iphonesimulator/Runner.app/Runner
+build/ios/Debug-iphonesimulator/Runner.app/Info.plist
+build/ios/Debug-iphonesimulator/Runner.app/_CodeSignature/CodeResources
