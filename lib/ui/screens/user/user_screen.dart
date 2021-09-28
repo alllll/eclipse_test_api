@@ -28,6 +28,8 @@ class UserScreen extends GetView<UserController> {
                         _UserCard(user: controller.user.value!),
                         const Text("Posts", style: TextStyle(fontSize: 20)),
                         _RecentPosts(posts: controller.posts.value),
+                        const Text("Albums", style: TextStyle(fontSize: 20)),
+                        _UserAlbums(albums: controller.albumsPreviews.value)
                       ],
                     ),
                   ]),
@@ -38,6 +40,46 @@ class UserScreen extends GetView<UserController> {
             return const Center(child: CircularProgressIndicator());
           }
         })));
+  }
+}
+
+class _UserAlbums extends StatelessWidget {
+  const _UserAlbums({Key? key, required this.albums}) : super(key: key);
+
+  final List<AlbumPreview> albums;
+
+  @override
+  Widget build(BuildContext context) {
+    return GridView.builder(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+            maxCrossAxisExtent: 200,
+            childAspectRatio: 3 / 2,
+            crossAxisSpacing: 20,
+            mainAxisSpacing: 20),
+        itemCount: albums.length,
+        itemBuilder: (BuildContext context, index) {
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              alignment: Alignment.center,
+              child:
+                  Column(mainAxisAlignment: MainAxisAlignment.end, children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(albums[index].album.title),
+                )
+              ]),
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                      fit: BoxFit.fill,
+                      image: NetworkImage(albums[index].photo[0].thumbnailUrl)),
+                  color: Colors.amber,
+                  borderRadius: BorderRadius.circular(15)),
+            ),
+          );
+        });
   }
 }
 

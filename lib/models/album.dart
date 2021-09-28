@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 part 'album.g.dart';
@@ -42,4 +44,10 @@ class Album {
 
   @override
   int get hashCode => userId.hashCode ^ id.hashCode ^ title.hashCode;
+}
+
+List<Album> parseAlbums(String response) {
+  final parsed = jsonDecode(response).cast<Map<String, dynamic>>();
+
+  return parsed.map<Album>((json) => Album.fromJson(json)).toList();
 }

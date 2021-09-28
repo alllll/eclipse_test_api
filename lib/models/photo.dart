@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:eclipse_test_api/models/index.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 part 'photo.g.dart';
@@ -77,4 +80,10 @@ class Photo {
       title.hashCode ^
       url.hashCode ^
       thumbnailUrl.hashCode;
+}
+
+List<Photo> parsePhotos(String response) {
+  final parsed = jsonDecode(response).cast<Map<String, dynamic>>();
+
+  return parsed.map<Photo>((json) => Photo.fromJson(json)).toList();
 }

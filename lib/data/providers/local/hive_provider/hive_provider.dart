@@ -1,6 +1,9 @@
 import 'dart:async';
 
 import 'package:eclipse_test_api/data/providers/local/local_data_interface.dart';
+import 'package:eclipse_test_api/models/photo.dart';
+import 'package:eclipse_test_api/models/comment.dart';
+import 'package:eclipse_test_api/models/album.dart';
 import 'package:eclipse_test_api/models/post.dart';
 import 'package:eclipse_test_api/models/user.dart';
 import 'package:get/get.dart';
@@ -15,6 +18,9 @@ const String postBox = "postBox";
 class HiveProvider implements LocalDataInterface {
   final Box users = Get.find<Box>(tag: userBox);
   final Box posts = Get.find<Box>(tag: postBox);
+  final Box albums = Get.find<Box>(tag: albumBox);
+  final Box photos = Get.find<Box>(tag: photoBox);
+  final Box comments = Get.find<Box>(tag: commentBox);
 
   //users
   @override
@@ -67,6 +73,84 @@ class HiveProvider implements LocalDataInterface {
   Future<void> savePosts(List<Post> newPosts) async {
     for (var post in newPosts) {
       posts.put(post.id, post);
+    }
+  }
+
+  @override
+  Future<Album?> getAlbum(int id) {
+    final compleater = Completer<Album?>();
+    compleater.complete(albums.get(id));
+    return compleater.future;
+  }
+
+  @override
+  Future<List<Album>> getAlbums() {
+    final compleater = Completer<List<Album>>();
+    compleater.complete(albums.values.map((e) => e as Album).toList());
+    return compleater.future;
+  }
+
+  @override
+  Future<void> saveAlbum(Album album) async {
+    await albums.put(album.id, album);
+  }
+
+  @override
+  Future<void> saveAlbums(List<Album> newAlbums) async {
+    for (var album in newAlbums) {
+      albums.put(album.id, album);
+    }
+  }
+
+  @override
+  Future<Comment?> getComment(int id) {
+    final compleater = Completer<Comment?>();
+    compleater.complete(comments.get(id));
+    return compleater.future;
+  }
+
+  @override
+  Future<List<Comment>> getComments() {
+    final compleater = Completer<List<Comment>>();
+    compleater.complete(comments.values.map((e) => e as Comment).toList());
+    return compleater.future;
+  }
+
+  @override
+  Future<void> saveComment(Comment comment) async {
+    await comments.put(comment.id, comment);
+  }
+
+  @override
+  Future<void> saveComments(List<Comment> newComments) async {
+    for (var comment in newComments) {
+      comments.put(comment.id, comment);
+    }
+  }
+
+  @override
+  Future<Photo?> getPhoto(int id) {
+    final compleater = Completer<Photo?>();
+    compleater.complete(photos.get(id));
+    return compleater.future;
+  }
+
+  @override
+  Future<List<Photo>> getPhotos() {
+    final compleater = Completer<List<Photo>>();
+    compleater.complete(photos.values.map((e) => e as Photo).toList());
+    return compleater.future;
+  }
+
+  @override
+  Future<void> savePhoto(Photo photo) async {
+    await photos.put(photo.id, photo);
+  }
+
+  @override
+  Future<void> savePhotos(List<Photo> newPhotos) async {
+    for (var photo in newPhotos) {
+      photos.put(photo.id, photo);
     }
   }
 }

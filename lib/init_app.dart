@@ -1,5 +1,8 @@
 import 'package:eclipse_test_api/data/providers/local/hive_provider/hive_provider.dart';
 import 'package:eclipse_test_api/data/providers/remote/remote_data_interface.dart';
+import 'package:eclipse_test_api/data/repositories/album_repository.dart';
+import 'package:eclipse_test_api/data/repositories/comment_repository.dart';
+import 'package:eclipse_test_api/data/repositories/photo_repository.dart';
 import 'package:eclipse_test_api/data/repositories/post_repository.dart';
 import 'package:eclipse_test_api/data/repositories/user_repository.dart';
 import 'package:eclipse_test_api/models/index.dart';
@@ -24,6 +27,9 @@ Future<void> initApp() async {
 
   Get.put<UserRepository>(UserRepository(), permanent: true);
   Get.put<PostRepository>(PostRepository(), permanent: true);
+  Get.put<AlbumRepository>(AlbumRepository(), permanent: true);
+  Get.put<PhotoRepository>(PhotoRepository(), permanent: true);
+  Get.put<CommentRepository>(CommentRepository(), permanent: true);
 }
 
 Future<void> initDb() async {

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 part 'comment.g.dart';
@@ -64,4 +66,10 @@ class Comment {
       name.hashCode ^
       email.hashCode ^
       body.hashCode;
+}
+
+List<Comment> parseComment(String response) {
+  final parsed = jsonDecode(response).cast<Map<String, dynamic>>();
+
+  return parsed.map<Comment>((json) => Comment.fromJson(json)).toList();
 }

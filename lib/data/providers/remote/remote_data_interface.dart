@@ -15,5 +15,10 @@ abstract class RemoteDataInterface {
 
   //photos
   Future<List<Photo>> fetchPhotos({int? albumId});
-  Future<Post> fetchPhoto(int id);
+  Future<Photo> fetchPhoto(int id);
+
+  //comments
+  Future<List<Comment>> fetchComments({int? postId});
+  Future<Comment> fetchComment(int id);
+  Future<Comment> sendComment(Comment comment);
 }
