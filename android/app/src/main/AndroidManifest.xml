@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.eclipse_test_api">
+    package="ru.alllll.eclipse_test_api">
    <application
         android:label="eclipse_test_api"
         android:icon="@mipmap/ic_launcher">

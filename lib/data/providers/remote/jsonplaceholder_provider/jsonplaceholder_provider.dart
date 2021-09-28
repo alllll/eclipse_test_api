@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:eclipse_test_api/data/providers/remote/remote_data_interface.dart';
 import 'package:eclipse_test_api/models/comment.dart';
@@ -101,7 +103,15 @@ class JsonPlaceholderProvider implements RemoteDataInterface {
 
   @override
   Future<Comment> sendComment(Comment comment) async {
-    final response = await client.post("/comments", data: comment.toJson());
-    return Comment.fromJson(response.data);
+    final response = await client.post("/comments",
+        data: {
+          "postId": comment.postId,
+          "name": comment.name,
+          "email": comment.email,
+          "body": comment.body
+        },
+        options: Options(
+            headers: {"Content-type": "application/json; charset=UTF-8"}));
+    return Comment.fromJson(jsonDecode(response.data));
   }
 }

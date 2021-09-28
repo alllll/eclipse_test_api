@@ -19,4 +19,10 @@ class CommentRepository {
     comment ??= await remoteDataInterface.fetchComment(id);
     return comment;
   }
+
+  Future<Comment> sendComment(Comment comment) async {
+    final result = await remoteDataInterface.sendComment(comment);
+    localDataInterface.saveComment(result);
+    return result;
+  }
 }

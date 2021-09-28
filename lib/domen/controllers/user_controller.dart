@@ -2,6 +2,7 @@ import 'package:eclipse_test_api/data/repositories/album_repository.dart';
 import 'package:eclipse_test_api/data/repositories/photo_repository.dart';
 import 'package:eclipse_test_api/data/repositories/post_repository.dart';
 import 'package:eclipse_test_api/data/repositories/user_repository.dart';
+import 'package:eclipse_test_api/domen/model/album_preview.dart';
 import 'package:eclipse_test_api/models/index.dart';
 import 'package:get/get.dart';
 
@@ -12,10 +13,7 @@ class UserController extends GetxController {
   final photoRepository = Get.find<PhotoRepository>();
 
   Rx<User?> user = Rx<User?>(null);
-  Rx<List<Post>> posts = Rx<List<Post>>(List.empty());
-  // Rx<List<Album>> albums = Rx<List<Album>>(List.empty());
-  /* Rx<List<AlbumPreview>> albumsPreviews =
-      Rx<List<AlbumPreview>>(List.empty(growable: true));*/
+  RxList<Post> posts = RxList<Post>(List.empty());
   RxList<AlbumPreview> albumsPreviews =
       RxList<AlbumPreview>(List.empty(growable: true));
 
@@ -55,11 +53,4 @@ class UserController extends GetxController {
       Get.snackbar("Error", "Trying later ...");
     }
   }
-}
-
-class AlbumPreview {
-  final Album album;
-  final List<Photo> photo;
-
-  AlbumPreview({required this.album, required this.photo});
 }

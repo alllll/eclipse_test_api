@@ -1,4 +1,5 @@
 import 'package:eclipse_test_api/domen/controllers/user_controller.dart';
+import 'package:eclipse_test_api/domen/model/album_preview.dart';
 import 'package:eclipse_test_api/models/index.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -24,11 +25,22 @@ class UserScreen extends GetView<UserController> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text("Profile", style: TextStyle(fontSize: 20)),
+                        const Text("Профиль", style: TextStyle(fontSize: 20)),
                         _UserCard(user: controller.user.value!),
-                        const Text("Posts", style: TextStyle(fontSize: 20)),
+                        const Divider(),
+                        const Text("Посты", style: TextStyle(fontSize: 20)),
                         _RecentPosts(posts: controller.posts.value),
-                        const Text("Albums", style: TextStyle(fontSize: 20)),
+                        Center(
+                          child: ElevatedButton(
+                              onPressed: () {
+                                Get.toNamed("/posts", arguments: {
+                                  "id": controller.user.value!.id
+                                });
+                              },
+                              child: const Text("Просмотреть все")),
+                        ),
+                        const Divider(),
+                        const Text("Альбомы", style: TextStyle(fontSize: 20)),
                         _UserAlbums(albums: controller.albumsPreviews.value)
                       ],
                     ),
@@ -58,27 +70,61 @@ class _UserAlbums extends StatelessWidget {
             childAspectRatio: 3 / 2,
             crossAxisSpacing: 20,
             mainAxisSpacing: 20),
-        itemCount: albums.length,
+        itemCount: albums.length + 1,
         itemBuilder: (BuildContext context, index) {
-          return Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-              alignment: Alignment.center,
-              child:
-                  Column(mainAxisAlignment: MainAxisAlignment.end, children: [
-                Padding(
+          if (albums.isEmpty) {
+            return Container();
+          } else {
+            if (index >= albums.length) {
+              return GestureDetector(
+                onTap: () => Get.toNamed("/albums",
+                    arguments: {"id": albums.first.album.userId}),
+                child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Text(albums[index].album.title),
-                )
-              ]),
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                      fit: BoxFit.fill,
-                      image: NetworkImage(albums[index].photo[0].thumbnailUrl)),
-                  color: Colors.amber,
-                  borderRadius: BorderRadius.circular(15)),
-            ),
-          );
+                  child: Container(
+                    alignment: Alignment.center,
+                    child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const [
+                          Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Text("Просмотреть все"),
+                          )
+                        ]),
+                    decoration: BoxDecoration(
+                        color: Colors.amber,
+                        borderRadius: BorderRadius.circular(15)),
+                  ),
+                ),
+              );
+            } else {
+              return GestureDetector(
+                onTap: () => Get.toNamed("/album",
+                    arguments: {"id": albums[index].album.id}),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    alignment: Alignment.center,
+                    child: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(albums[index].album.title),
+                          )
+                        ]),
+                    decoration: BoxDecoration(
+                        image: DecorationImage(
+                            fit: BoxFit.fill,
+                            image: NetworkImage(
+                                albums[index].photo[0].thumbnailUrl)),
+                        color: Colors.amber,
+                        borderRadius: BorderRadius.circular(15)),
+                  ),
+                ),
+              );
+            }
+          }
         });
   }
 }
@@ -94,24 +140,27 @@ class _RecentPosts extends StatelessWidget {
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       itemBuilder: (context, index) {
-        return Card(
-          margin: const EdgeInsets.all(10.0),
-          child: Container(
-            padding: const EdgeInsets.all(8),
-            width: double.infinity,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  posts[index].title,
-                  style: const TextStyle(fontSize: 18),
-                ),
-                Text(
-                  posts[index].body,
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 1,
-                )
-              ],
+        return GestureDetector(
+          onTap: () => Get.toNamed("/post", arguments: {"id": posts[index].id}),
+          child: Card(
+            margin: const EdgeInsets.all(10.0),
+            child: Container(
+              padding: const EdgeInsets.all(8),
+              width: double.infinity,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    posts[index].title,
+                    style: const TextStyle(fontSize: 18),
+                  ),
+                  Text(
+                    posts[index].body,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                  )
+                ],
+              ),
             ),
           ),
         );
