@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:eclipse_test_api/models/index.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 part 'photo.g.dart';

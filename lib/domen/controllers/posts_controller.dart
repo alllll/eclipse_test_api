@@ -15,7 +15,7 @@ class PostsController extends GetxController {
     try {
       posts.value = await postRepository.fetchPosts(userId);
     } catch (err) {
-      Get.snackbar("Error", "Trying later ...");
+      return;
     }
   }
 }

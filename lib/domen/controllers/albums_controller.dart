@@ -15,14 +15,19 @@ class AlbumsController extends GetxController {
   }
 
   void fetchAlbums(int userId) async {
+    albumsPreviews.clear();
     try {
       var albums = (await albumRepository.fetchAlbums(userId));
       Future.forEach(albums, (Album element) async {
-        final photos = await photoRepository.fetchPhotos(element.id);
-        albumsPreviews.add(AlbumPreview(album: element, photo: photos));
+        try {
+          final photos = await photoRepository.fetchPhotos(element.id);
+          albumsPreviews.add(AlbumPreview(album: element, photo: photos));
+        } catch (err) {
+          return;
+        }
       });
     } catch (err) {
-      Get.snackbar("Error", "Trying later ...");
+      return;
     }
   }
 }

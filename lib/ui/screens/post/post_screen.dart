@@ -12,36 +12,42 @@ class PostScreen extends GetView<PostController> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          backgroundColor: Colors.green[100],
           elevation: 0,
           title: const Text("Пост"),
         ),
         body: SafeArea(child: Obx(() {
           if (controller.post.value != null) {
-            return CustomScrollView(
-              slivers: [
-                SliverList(
-                  delegate: SliverChildListDelegate([
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        _PostCard(post: controller.post.value!),
-                        const Divider(),
-                        const Text("Комментарии"),
-                        _CommentList(comments: controller.comments.value),
-                        Center(
-                          child: ElevatedButton(
-                              onPressed: () async {
-                                await Get.dialog(Scaffold(
-                                  body: _CreateComment(),
-                                ));
-                              },
-                              child: const Text("Оставить комментарий")),
-                        ),
-                      ],
-                    ),
-                  ]),
-                )
-              ],
+            return RefreshIndicator(
+              onRefresh: () async => controller.refreshScreen(),
+              child: CustomScrollView(
+                slivers: [
+                  SliverList(
+                    delegate: SliverChildListDelegate([
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          _PostCard(post: controller.post.value!),
+                          const Divider(),
+                          const Text("Комментарии"),
+                          _CommentList(comments: controller.comments.value),
+                          Center(
+                            child: ElevatedButton(
+                                onPressed: () async {
+                                  await Get.dialog(
+                                    Scaffold(
+                                      body: _CreateComment(),
+                                    ),
+                                  );
+                                },
+                                child: const Text("Оставить комментарий")),
+                          ),
+                        ],
+                      ),
+                    ]),
+                  )
+                ],
+              ),
             );
           } else {
             return const Center(child: CircularProgressIndicator());
@@ -64,6 +70,7 @@ class _CreateComment extends GetView<PostController> {
     return Center(
       child: SizedBox(
         width: Get.width / 1.1,
+        height: Get.height / 1.1,
         child: SafeArea(
             child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -96,6 +103,7 @@ class _CreateComment extends GetView<PostController> {
                     },
                   ),
                   TextFormField(
+                    maxLines: 5,
                     controller: controllerComment,
                     decoration: const InputDecoration(hintText: 'Текст'),
                     validator: (value) {

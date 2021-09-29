@@ -12,16 +12,14 @@ class PostController extends GetxController {
 
   PostController() {
     post = Rx<Post?>(null);
-    fetchPost(Get.arguments["id"]).then((value) {
-      fetchComments(post.value!.id);
-    });
+    refreshScreen();
   }
 
   Future<void> fetchPost(int id) async {
     try {
       post.value = await postRepository.fetchPost(id);
     } catch (err) {
-      Get.snackbar("Error", "Trying later ...");
+      return;
     }
   }
 
@@ -29,7 +27,7 @@ class PostController extends GetxController {
     try {
       comments.value = await commentRepository.fetchComments(postId);
     } catch (err) {
-      Get.snackbar("Error", "Trying later ...");
+      return;
     }
   }
 
@@ -39,8 +37,13 @@ class PostController extends GetxController {
       comments.add(comment);
       return true;
     } catch (err) {
-      Get.snackbar("Error", "Trying later ...");
+      return false;
     }
-    return false;
+  }
+
+  void refreshScreen() {
+    fetchPost(Get.arguments["id"]).then((value) {
+      fetchComments(post.value!.id);
+    });
   }
 }

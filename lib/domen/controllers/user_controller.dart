@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:eclipse_test_api/data/repositories/album_repository.dart';
 import 'package:eclipse_test_api/data/repositories/photo_repository.dart';
 import 'package:eclipse_test_api/data/repositories/post_repository.dart';
@@ -18,17 +20,14 @@ class UserController extends GetxController {
       RxList<AlbumPreview>(List.empty(growable: true));
 
   UserController() {
-    fetchUser(Get.arguments["id"]).then((value) {
-      fetchPosts();
-      fetchAlbums();
-    });
+    refreshScreen();
   }
 
   Future<void> fetchUser(int id) async {
     try {
       user.value = await userRepository.fetchUser(id);
     } catch (err) {
-      Get.snackbar("Error", "Trying later ...");
+      return;
     }
   }
 
@@ -37,11 +36,12 @@ class UserController extends GetxController {
       posts.value =
           (await postRepository.fetchPosts(user.value!.id)).sublist(0, 3);
     } catch (err) {
-      Get.snackbar("Error", "Trying later ...");
+      return;
     }
   }
 
   void fetchAlbums() async {
+    albumsPreviews.clear();
     try {
       var albums =
           (await albumRepository.fetchAlbums(user.value!.id)).sublist(0, 3);
@@ -50,7 +50,14 @@ class UserController extends GetxController {
         albumsPreviews.add(AlbumPreview(album: element, photo: photos));
       });
     } catch (err) {
-      Get.snackbar("Error", "Trying later ...");
+      return;
     }
+  }
+
+  void refreshScreen() async {
+    fetchUser(Get.arguments["id"]).then((value) {
+      fetchPosts();
+      fetchAlbums();
+    });
   }
 }

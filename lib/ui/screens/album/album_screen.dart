@@ -1,8 +1,8 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:eclipse_test_api/domen/controllers/album_controller.dart';
 import 'package:eclipse_test_api/models/index.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 
 class AlbumScreen extends GetView<AlbumController> {
@@ -11,6 +11,7 @@ class AlbumScreen extends GetView<AlbumController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.green[100],
         elevation: 0,
         title: const Text("Альбом"),
       ),
@@ -58,9 +59,11 @@ class _PhotoItem extends StatelessWidget {
     return Stack(
       alignment: AlignmentDirectional.bottomCenter,
       children: [
-        Image.network(
+        ExtendedImage.network(
           photo.url,
           width: double.infinity,
+          fit: BoxFit.fill,
+          cache: true,
         ),
         Text(photo.title)
       ],

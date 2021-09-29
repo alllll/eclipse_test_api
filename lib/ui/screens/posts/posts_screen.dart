@@ -12,6 +12,7 @@ class PostsScreen extends GetView<PostsController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.green[100],
         elevation: 0,
         title: const Text("Все посты"),
       ),

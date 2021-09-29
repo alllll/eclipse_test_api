@@ -19,7 +19,7 @@ class AlbumController extends GetxController {
       album = Rx<Album>(await albumRepository.fetchAlbum(id));
       photos.value = await photoRepository.fetchPhotos(album.value.id);
     } catch (err) {
-      Get.snackbar("Error", "Trying later ...");
+      return;
     }
   }
 }

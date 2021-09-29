@@ -1,4 +1,4 @@
-package com.example.eclipse_test_api
+package ru.alllll.eclipse_test_api
 
 import io.flutter.embedding.android.FlutterActivity
 
