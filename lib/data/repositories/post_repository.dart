@@ -8,8 +8,20 @@ class PostRepository {
   final remoteDataInterface = Get.find<RemoteDataInterface>();
 
   Future<List<Post>> fetchPosts(int userId) async {
-    final posts = await remoteDataInterface.fetchPosts();
-    await localDataInterface.savePosts(posts);
+    late List<Post> posts;
+    try {
+      posts = await localDataInterface.getPosts(userId: userId);
+      if (posts.isEmpty) {
+        posts = await remoteDataInterface.fetchPosts(userId: userId);
+        await localDataInterface.savePosts(posts);
+      } else {
+        print("posts from cache");
+      }
+    } catch (err) {
+      print("posts from cache");
+      posts = await localDataInterface.getPosts(userId: userId);
+      rethrow;
+    }
     return posts;
   }
 

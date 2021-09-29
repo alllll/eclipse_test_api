@@ -8,8 +8,19 @@ class PhotoRepository {
   final remoteDataInterface = Get.find<RemoteDataInterface>();
 
   Future<List<Photo>> fetchPhotos(int albumId) async {
-    final photos = await remoteDataInterface.fetchPhotos(albumId: albumId);
-    await localDataInterface.savePhotos(photos);
+    late List<Photo> photos;
+    try {
+      photos = await localDataInterface.getPhotos(albumId: albumId);
+      if (photos.isEmpty) {
+        photos = await remoteDataInterface.fetchPhotos(albumId: albumId);
+        await localDataInterface.savePhotos(photos);
+      } else {
+        print("photos from cache");
+      }
+    } catch (err) {
+      print("photos from cache");
+      photos = await localDataInterface.getPhotos(albumId: albumId);
+    }
     return photos;
   }
 

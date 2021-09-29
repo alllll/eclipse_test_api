@@ -9,25 +9,25 @@ abstract class LocalDataInterface {
 
   //posts
   Future<void> savePosts(List<Post> posts);
-  Future<List<Post>> getPosts();
+  Future<List<Post>> getPosts({int? userId});
   Future<Post?> getPost(int id);
   Future<void> savePost(Post post);
 
   //albums
   Future<void> saveAlbums(List<Album> albums);
-  Future<List<Album>> getAlbums();
+  Future<List<Album>> getAlbums({int? userId});
   Future<Album?> getAlbum(int id);
   Future<void> saveAlbum(Album album);
 
   //photos
   Future<void> savePhotos(List<Photo> photos);
-  Future<List<Photo>> getPhotos();
+  Future<List<Photo>> getPhotos({int? albumId});
   Future<Photo?> getPhoto(int id);
   Future<void> savePhoto(Photo photo);
 
   //comments
   Future<void> saveComments(List<Comment> comments);
-  Future<List<Comment>> getComments();
+  Future<List<Comment>> getComments({int? postId});
   Future<Comment?> getComment(int id);
   Future<void> saveComment(Comment comment);
 }

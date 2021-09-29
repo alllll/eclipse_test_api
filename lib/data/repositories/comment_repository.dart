@@ -8,8 +8,19 @@ class CommentRepository {
   final remoteDataInterface = Get.find<RemoteDataInterface>();
 
   Future<List<Comment>> fetchComments(int postId) async {
-    final comments = await remoteDataInterface.fetchComments(postId: postId);
-    await localDataInterface.saveComments(comments);
+    late List<Comment> comments;
+    try {
+      comments = await localDataInterface.getComments(postId: postId);
+      if (comments.isEmpty) {
+        comments = await remoteDataInterface.fetchComments(postId: postId);
+        await localDataInterface.saveComments(comments);
+      } else {
+        print("comments from cache");
+      }
+    } catch (err) {
+      print("comments from cache");
+      comments = await localDataInterface.getComments(postId: postId);
+    }
     return comments;
   }
 

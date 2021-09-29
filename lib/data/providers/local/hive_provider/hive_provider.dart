@@ -58,9 +58,16 @@ class HiveProvider implements LocalDataInterface {
   }
 
   @override
-  Future<List<Post>> getPosts() {
+  Future<List<Post>> getPosts({int? userId}) {
     final compleater = Completer<List<Post>>();
-    compleater.complete(posts.values.map((e) => e as Post).toList());
+    if (userId != null) {
+      compleater.complete(posts.values
+          .map((e) => e as Post)
+          .where((post) => post.userId == userId)
+          .toList());
+    } else {
+      compleater.complete(comments.values.map((e) => e as Post).toList());
+    }
     return compleater.future;
   }
 
@@ -84,9 +91,16 @@ class HiveProvider implements LocalDataInterface {
   }
 
   @override
-  Future<List<Album>> getAlbums() {
+  Future<List<Album>> getAlbums({int? userId}) {
     final compleater = Completer<List<Album>>();
-    compleater.complete(albums.values.map((e) => e as Album).toList());
+    if (userId != null) {
+      compleater.complete(albums.values
+          .map((e) => e as Album)
+          .where((album) => album.userId == userId)
+          .toList());
+    } else {
+      compleater.complete(albums.values.map((e) => e as Album).toList());
+    }
     return compleater.future;
   }
 
@@ -110,9 +124,16 @@ class HiveProvider implements LocalDataInterface {
   }
 
   @override
-  Future<List<Comment>> getComments() {
+  Future<List<Comment>> getComments({int? postId}) {
     final compleater = Completer<List<Comment>>();
-    compleater.complete(comments.values.map((e) => e as Comment).toList());
+    if (postId != null) {
+      compleater.complete(comments.values
+          .map((e) => e as Comment)
+          .where((comment) => comment.postId == postId)
+          .toList());
+    } else {
+      compleater.complete(comments.values.map((e) => e as Comment).toList());
+    }
     return compleater.future;
   }
 
@@ -136,9 +157,16 @@ class HiveProvider implements LocalDataInterface {
   }
 
   @override
-  Future<List<Photo>> getPhotos() {
+  Future<List<Photo>> getPhotos({int? albumId}) {
     final compleater = Completer<List<Photo>>();
-    compleater.complete(photos.values.map((e) => e as Photo).toList());
+    if (albumId != null) {
+      compleater.complete(photos.values
+          .map((e) => e as Photo)
+          .where((photo) => photo.albumId == albumId)
+          .toList());
+    } else {
+      compleater.complete(photos.values.map((e) => e as Photo).toList());
+    }
     return compleater.future;
   }
 

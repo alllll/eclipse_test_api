@@ -8,13 +8,18 @@ class UserRepository {
   final remoteDataInterface = Get.find<RemoteDataInterface>();
 
   Future<List<User>> fetchUsers() async {
-    late final users;
+    late List<User> users;
     try {
-      users = await remoteDataInterface.fetchUsers();
-      await localDataInterface.saveUsers(users);
+      users = await localDataInterface.getUsers();
+      if (users.isEmpty) {
+        users = await remoteDataInterface.fetchUsers();
+        await localDataInterface.saveUsers(users);
+      } else {
+        print("users from cache");
+      }
     } catch (err) {
       print("users from cache");
-      users = localDataInterface.getUsers();
+      users = await localDataInterface.getUsers();
     }
     return users;
   }
