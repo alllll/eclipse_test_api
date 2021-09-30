@@ -62,8 +62,8 @@ class HiveProvider implements LocalDataInterface {
     final compleater = Completer<List<Post>>();
     if (userId != null) {
       compleater.complete(posts.values
-          .map((e) => e as Post)
           .where((post) => post.userId == userId)
+          .map((e) => e as Post)
           .toList());
     } else {
       compleater.complete(comments.values.map((e) => e as Post).toList());
@@ -95,8 +95,8 @@ class HiveProvider implements LocalDataInterface {
     final compleater = Completer<List<Album>>();
     if (userId != null) {
       compleater.complete(albums.values
-          .map((e) => e as Album)
           .where((album) => album.userId == userId)
+          .map((e) => e as Album)
           .toList());
     } else {
       compleater.complete(albums.values.map((e) => e as Album).toList());
@@ -128,8 +128,8 @@ class HiveProvider implements LocalDataInterface {
     final compleater = Completer<List<Comment>>();
     if (postId != null) {
       compleater.complete(comments.values
-          .map((e) => e as Comment)
           .where((comment) => comment.postId == postId)
+          .map((e) => e as Comment)
           .toList());
     } else {
       compleater.complete(comments.values.map((e) => e as Comment).toList());
@@ -161,8 +161,8 @@ class HiveProvider implements LocalDataInterface {
     final compleater = Completer<List<Photo>>();
     if (albumId != null) {
       compleater.complete(photos.values
-          .map((e) => e as Photo)
           .where((photo) => photo.albumId == albumId)
+          .map((e) => e as Photo)
           .toList());
     } else {
       compleater.complete(photos.values.map((e) => e as Photo).toList());
