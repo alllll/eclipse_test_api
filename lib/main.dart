@@ -16,6 +16,7 @@ import 'package:get/get.dart';
 
 void main() async {
   //test
+  //test2
   await initApp();
   runApp(const MyApp());
 }
